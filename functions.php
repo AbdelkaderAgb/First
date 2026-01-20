@@ -5,28 +5,6 @@
  */
 
 // ==========================================
-// LANGUAGE SETTINGS
-// ==========================================
-// Support for Arabic and French languages
-
-// Handle language switching
-if (isset($_GET['lang'])) {
-    $_SESSION['lang'] = $_GET['lang'];
-}
-
-// Get current language from session or default to Arabic
-$lang = $_SESSION['lang'] ?? 'ar';
-
-// Validate language (only ar or fr allowed)
-if (!in_array($lang, ['ar', 'fr'])) {
-    $lang = 'ar';
-    $_SESSION['lang'] = 'ar';
-}
-
-// Set text direction based on language
-$dir = ($lang == 'ar') ? 'rtl' : 'ltr';
-
-// ==========================================
 // HELPER FUNCTIONS
 // ==========================================
 

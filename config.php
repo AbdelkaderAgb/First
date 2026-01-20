@@ -13,6 +13,26 @@ session_start();
 date_default_timezone_set('Africa/Nouakchott');
 
 // ==========================================
+// LANGUAGE SETTINGS
+// ==========================================
+// Handle language switching
+if (isset($_GET['lang'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+// Get current language from session or default to Arabic
+$lang = $_SESSION['lang'] ?? 'ar';
+
+// Validate language (only ar or fr allowed)
+if (!in_array($lang, ['ar', 'fr'])) {
+    $lang = 'ar';
+    $_SESSION['lang'] = 'ar';
+}
+
+// Set text direction based on language
+$dir = ($lang == 'ar') ? 'rtl' : 'ltr';
+
+// ==========================================
 // DATABASE CONFIGURATION
 // ==========================================
 $db_config = [
@@ -36,9 +56,23 @@ $order_expiry_hours = 3;              // Orders expire after 3 hours without acc
 $uploads_dir = __DIR__ . '/uploads';  // Profile pictures directory
 
 // ==========================================
-// NOUAKCHOTT ZONES (Moughataas) - Arabic Only
+// NOUAKCHOTT ZONES (Moughataas) - Bilingual
 // ==========================================
-$zones = [
+// Define zone base keys (used in database)
+$zone_keys = [
+    'Tevragh Zeina',
+    'Ksar',
+    'Sebkha',
+    'Teyarett',
+    'Dar Naïm',
+    'Toujounine',
+    'Arafat',
+    'El Mina',
+    'Riyad'
+];
+
+// Zone translations based on current language
+$zones_ar = [
     'Tevragh Zeina' => 'تفرغ زينة',
     'Ksar' => 'لكصر',
     'Sebkha' => 'السبخة',
@@ -49,6 +83,21 @@ $zones = [
     'El Mina' => 'الميناء',
     'Riyad' => 'الرياض'
 ];
+
+$zones_fr = [
+    'Tevragh Zeina' => 'Tevragh Zeina',
+    'Ksar' => 'Ksar',
+    'Sebkha' => 'Sebkha',
+    'Teyarett' => 'Teyarett',
+    'Dar Naïm' => 'Dar Naïm',
+    'Toujounine' => 'Toujounine',
+    'Arafat' => 'Arafat',
+    'El Mina' => 'El Mina',
+    'Riyad' => 'Riyad'
+];
+
+// Select zones array based on current language (set in functions.php)
+$zones = ($lang == 'fr') ? $zones_fr : $zones_ar;
 
 // ==========================================
 // ZONE PRICE MATRIX (MRU)
