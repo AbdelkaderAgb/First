@@ -7,9 +7,24 @@
 // ==========================================
 // LANGUAGE SETTINGS
 // ==========================================
-// Base language is Arabic only
-$lang = 'ar';
-$dir = 'rtl';
+// Support for Arabic and French languages
+
+// Handle language switching
+if (isset($_GET['lang'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
+// Get current language from session or default to Arabic
+$lang = $_SESSION['lang'] ?? 'ar';
+
+// Validate language (only ar or fr allowed)
+if (!in_array($lang, ['ar', 'fr'])) {
+    $lang = 'ar';
+    $_SESSION['lang'] = 'ar';
+}
+
+// Set text direction based on language
+$dir = ($lang == 'ar') ? 'rtl' : 'ltr';
 
 // ==========================================
 // HELPER FUNCTIONS
@@ -442,5 +457,12 @@ function getVisitorStats($conn) {
 // ==========================================
 // TRANSLATIONS - Include from separate file
 // ==========================================
-$t = require_once __DIR__ . '/lang/ar.php';
+// Load translations based on current language
+$lang_file = __DIR__ . '/lang/' . $lang . '.php';
+if (file_exists($lang_file)) {
+    $t = require_once $lang_file;
+} else {
+    // Fallback to Arabic if language file not found
+    $t = require_once __DIR__ . '/lang/ar.php';
+}
 ?>
