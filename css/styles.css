@@ -991,6 +991,52 @@
             box-shadow: var(--shadow);
             color: var(--primary);
         }
+        
+        /* Language Switcher */
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .language-switcher .lang-btn {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--gray-100);
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+        .language-switcher .lang-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+            transform: translateY(-2px);
+        }
+        .language-switcher .lang-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(88, 75, 246, 0.3);
+        }
+        .language-switcher .lang-btn.active i {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
         .auth-form {
             display: none;
             animation: fadeIn 0.4s ease;

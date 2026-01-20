@@ -5,13 +5,6 @@
  */
 
 // ==========================================
-// LANGUAGE SETTINGS
-// ==========================================
-// Base language is Arabic only
-$lang = 'ar';
-$dir = 'rtl';
-
-// ==========================================
 // HELPER FUNCTIONS
 // ==========================================
 
@@ -442,5 +435,12 @@ function getVisitorStats($conn) {
 // ==========================================
 // TRANSLATIONS - Include from separate file
 // ==========================================
-$t = require_once __DIR__ . '/lang/ar.php';
+// Load translations based on current language
+$lang_file = __DIR__ . '/lang/' . $lang . '.php';
+if (file_exists($lang_file)) {
+    $t = require_once $lang_file;
+} else {
+    // Fallback to Arabic if language file not found
+    $t = require_once __DIR__ . '/lang/ar.php';
+}
 ?>
