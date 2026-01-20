@@ -8,9 +8,6 @@
 // LANGUAGE SETTINGS
 // ==========================================
 // Only Arabic language is supported
-if (isset($_GET['lang']) && $_GET['lang'] === 'ar') {
-    $_SESSION['lang'] = 'ar';
-}
 $lang = 'ar'; // Always use Arabic
 $dir = 'rtl'; // Always RTL for Arabic
 
@@ -26,36 +23,32 @@ function e($str) {
 }
 
 /**
- * Format date according to current language
+ * Format date according to current language (Arabic only)
  */
 function fmtDate($date) {
-    global $lang;
     $timestamp = strtotime($date);
     $now = time();
     $diff = $now - $timestamp;
 
     // Show relative time for recent dates
     if ($diff < 60) {
-        return $lang == 'ar' ? 'الآن' : 'Maintenant';
+        return 'الآن';
     } elseif ($diff < 3600) {
         $mins = floor($diff / 60);
-        return $lang == 'ar' ? "منذ {$mins} دقيقة" : "Il y a {$mins} min";
+        return "منذ {$mins} دقيقة";
     } elseif ($diff < 86400) {
         $hours = floor($diff / 3600);
-        return $lang == 'ar' ? "منذ {$hours} ساعة" : "Il y a {$hours}h";
+        return "منذ {$hours} ساعة";
     }
 
-    if ($lang == 'ar') {
-        $months_ar = ['', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-                      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-        $day = date('d', $timestamp);
-        $month = $months_ar[(int)date('m', $timestamp)];
-        $year = date('Y', $timestamp);
-        $time = date('h:i A', $timestamp);
-        return "$day $month $year - $time";
-    }
-
-    return date('d/m/Y H:i', $timestamp);
+    // Format as Arabic date
+    $months_ar = ['', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                  'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+    $day = date('d', $timestamp);
+    $month = $months_ar[(int)date('m', $timestamp)];
+    $year = date('Y', $timestamp);
+    $time = date('h:i A', $timestamp);
+    return "$day $month $year - $time";
 }
 
 /**
