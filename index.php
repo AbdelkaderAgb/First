@@ -2018,49 +2018,49 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
 
                             <!-- Modern Order Summary Card -->
                             <div class="mb-3" id="orderSummaryContainer" style="display: none;">
-                                <div class="card border-0 shadow-sm" style="border-radius: 16px; overflow: hidden;">
-                                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 16px 20px;">
-                                        <h6 class="mb-0 fw-bold d-flex align-items-center">
-                                            <i class="fas fa-calculator me-2"></i>
+                                <div class="card border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 10px 14px;">
+                                        <h6 class="mb-0 fw-bold d-flex align-items-center" style="font-size: 0.9rem;">
+                                            <i class="fas fa-calculator me-2" style="font-size: 0.85rem;"></i>
                                             <?php echo $t['order_summary'] ?? 'Order Summary'; ?>
                                         </h6>
                                     </div>
-                                    <div class="card-body" style="padding: 20px; background: #f8f9fa;">
+                                    <div class="card-body" style="padding: 12px; background: #f8f9fa;">
                                         <!-- Base Delivery Price Row -->
-                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded-3 shadow-sm">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-white rounded-3 shadow-sm">
                                             <div class="d-flex align-items-center">
-                                                <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-truck text-white"></i>
+                                                <div class="icon-wrapper me-2" style="width: 30px; height: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-truck text-white" style="font-size: 0.75rem;"></i>
                                                 </div>
-                                                <span class="fw-medium"><?php echo $t['delivery_price'] ?? 'Delivery Price'; ?></span>
+                                                <span class="fw-medium" style="font-size: 0.875rem;"><?php echo $t['delivery_price'] ?? 'Delivery Price'; ?></span>
                                             </div>
-                                            <span id="basePriceDisplay" class="fw-bold fs-5" style="color: #667eea;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                            <span id="basePriceDisplay" class="fw-bold" style="color: #667eea; font-size: 1rem;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
                                         </div>
                                         
                                         <!-- Discount Row (shown only when promo is applied) -->
-                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded-3 shadow-sm" id="discountRow" style="display: none !important;">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-white rounded-3 shadow-sm" id="discountRow" style="display: none !important;">
                                             <div class="d-flex align-items-center">
-                                                <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                                    <i class="fas fa-tag text-white"></i>
+                                                <div class="icon-wrapper me-2" style="width: 30px; height: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-tag text-white" style="font-size: 0.75rem;"></i>
                                                 </div>
-                                                <span class="fw-medium text-success"><?php echo $t['discount'] ?? 'Discount'; ?></span>
+                                                <span class="fw-medium text-success" style="font-size: 0.875rem;"><?php echo $t['discount'] ?? 'Discount'; ?></span>
                                             </div>
-                                            <span id="discountDisplay" class="fw-bold fs-5 text-success">-0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                            <span id="discountDisplay" class="fw-bold text-success" style="font-size: 1rem;">-0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
                                         </div>
                                         
                                         <!-- Divider -->
-                                        <hr style="border-top: 2px dashed #dee2e6; margin: 20px 0;">
+                                        <hr style="border-top: 1px dashed #dee2e6; margin: 10px 0;">
                                         
                                         <!-- Final Total Price -->
-                                        <div class="p-4 bg-white rounded-3 shadow-sm" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+                                        <div class="p-2 bg-white rounded-3 shadow-sm" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="icon-wrapper me-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                                        <i class="fas fa-receipt" style="color: #ff6b6b; font-size: 20px;"></i>
+                                                    <div class="icon-wrapper me-2" style="width: 36px; height: 36px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-receipt" style="color: #ff6b6b; font-size: 0.9rem;"></i>
                                                     </div>
-                                                    <span class="fw-bold fs-5"><?php echo $t['total_price'] ?? 'Total'; ?></span>
+                                                    <span class="fw-bold" style="font-size: 1rem;"><?php echo $t['total_price'] ?? 'Total'; ?></span>
                                                 </div>
-                                                <span id="finalPriceDisplay" class="fw-bold" style="font-size: 28px; color: #667eea;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                                <span id="finalPriceDisplay" class="fw-bold" style="font-size: 1.25rem; color: #667eea;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
                                             </div>
                                         </div>
                                     </div>
