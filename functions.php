@@ -823,8 +823,10 @@ $text = [
         
         // Order Summary
         'order_summary' => 'ملخص الطلب',
+        'delivery_price' => 'سعر التوصيل',
         'discount' => 'الخصم',
         'total_price' => 'الإجمالي',
+        'subtotal' => 'المجموع الفرعي',
 
         // Working Zones (Driver)
         'working_zones' => 'مناطق العمل',
@@ -1295,8 +1297,10 @@ $text = [
         
         // Order Summary
         'order_summary' => 'Résumé de la commande',
+        'delivery_price' => 'Prix de livraison',
         'discount' => 'Réduction',
         'total_price' => 'Total',
+        'subtotal' => 'Sous-total',
 
         // Working Zones (Driver)
         'working_zones' => 'Zones de travail',

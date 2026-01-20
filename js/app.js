@@ -795,7 +795,6 @@ function initRealtimePolling(userRole, translations) {
                         });
 
                         // Only refresh page if user is not actively filling out the order form
-                        // This prevents the order summary from disappearing while the user is selecting zones
                         if (!isFillingOrderForm) {
                             setTimeout(() => location.reload(), 2000);
                         }
@@ -955,7 +954,7 @@ function validatePromoCode() {
                 input.classList.add('is-valid');
                 input.classList.remove('is-invalid');
                 
-                // Calculate and apply discount to order summary
+                // Calculate and apply discount
                 if (data.promo && typeof currentBasePrice !== 'undefined') {
                     let discountAmount = 0;
                     if (data.promo.discount_type === 'percentage') {
