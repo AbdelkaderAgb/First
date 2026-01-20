@@ -62,10 +62,9 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                 <p class="login-app-subtitle"><?php echo $t['app_desc']; ?></p>
             </div>
 
-            <!-- Language Switcher -->
+            <!-- Language Switcher - Arabic Only -->
             <div class="btn-group btn-group-sm lang-switcher mb-4" role="group">
-                <a href="?lang=ar" class="btn btn-outline-secondary <?php echo $lang=='ar'?'active':''; ?>">العربية</a>
-                <a href="?lang=fr" class="btn btn-outline-secondary <?php echo $lang=='fr'?'active':''; ?>">Français</a>
+                <a href="?lang=ar" class="btn btn-outline-secondary active">العربية</a>
             </div>
 
             <?php echo getFlash(); ?>
