@@ -481,7 +481,7 @@ return [
     'zone_ksar' => 'Ksar',
     'zone_sebkha' => 'Sebkha',
     'zone_teyarett' => 'Teyarett',
-    'zone_dar_naim' => 'Dar Naim',
+    'zone_dar_naim' => 'Dar Naïm',
     'zone_toujounine' => 'Toujounine',
     'zone_arafat' => 'Arafat',
     'zone_el_mina' => 'El Mina',
