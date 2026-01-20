@@ -62,11 +62,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                 <p class="login-app-subtitle"><?php echo $t['app_desc']; ?></p>
             </div>
 
-            <!-- Language Switcher -->
-            <div class="btn-group btn-group-sm lang-switcher mb-4" role="group">
-                <a href="?lang=ar" class="btn btn-outline-secondary <?php echo $lang=='ar'?'active':''; ?>">العربية</a>
-                <a href="?lang=fr" class="btn btn-outline-secondary <?php echo $lang=='fr'?'active':''; ?>">Français</a>
-            </div>
+            <!-- Site is Arabic Only -->
 
             <?php echo getFlash(); ?>
 
@@ -393,7 +389,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="working_zones[]" value="<?php echo e($key); ?>" id="zone_<?php echo e($key); ?>" <?php echo in_array($key, $userWorkingZones) ? 'checked' : ''; ?>>
                                             <label class="form-check-label" for="zone_<?php echo e($key); ?>">
-                                                <?php echo ($lang == 'ar') ? $name : $key; ?>
+                                                <?php echo e($name); ?>
                                             </label>
                                         </div>
                                         <?php endforeach; ?>
@@ -821,7 +817,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                 <div class="list-group-item d-flex align-items-center justify-content-between px-0 border-0">
                                     <div class="d-flex align-items-center gap-2">
                                         <span class="badge bg-<?php echo $index == 0 ? 'primary' : 'light text-dark'; ?>"><?php echo $index + 1; ?></span>
-                                        <span><?php echo ($lang == 'ar' && isset($zones[$zone['pickup_zone']])) ? (is_array($zones[$zone['pickup_zone']]) ? e($zones[$zone['pickup_zone']]['ar']) : e($zones[$zone['pickup_zone']])) : (isset($zones[$zone['pickup_zone']]) && is_array($zones[$zone['pickup_zone']]) ? e($zones[$zone['pickup_zone']][$lang] ?? $zones[$zone['pickup_zone']]['fr'] ?? $zone['pickup_zone']) : e($zone['pickup_zone'])); ?></span>
+                                        <span><?php echo isset($zones[$zone['pickup_zone']]) ? e($zones[$zone['pickup_zone']]) : e($zone['pickup_zone']); ?></span>
                                     </div>
                                     <span class="badge bg-success"><?php echo $zone['order_count']; ?> <?php echo $t['orders'] ?? 'orders'; ?></span>
                                 </div>
@@ -1587,7 +1583,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                         <select name="pickup_zone" class="form-select" required>
                                             <option value=""><?php echo $t['select_zone'] ?? 'Select zone'; ?></option>
                                             <?php foreach($zones as $key => $name): ?>
-                                            <option value="<?php echo e($key); ?>"><?php echo ($lang == 'ar') ? $name : $key; ?></option>
+                                            <option value="<?php echo e($key); ?>"><?php echo e($name); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -1596,7 +1592,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                         <select name="dropoff_zone" class="form-select" required>
                                             <option value=""><?php echo $t['select_zone'] ?? 'Select zone'; ?></option>
                                             <?php foreach($zones as $key => $name): ?>
-                                            <option value="<?php echo e($key); ?>"><?php echo ($lang == 'ar') ? $name : $key; ?></option>
+                                            <option value="<?php echo e($key); ?>"><?php echo e($name); ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -1852,7 +1848,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                 <div class="d-flex flex-wrap gap-2 align-items-center">
                                     <small class="text-muted"><i class="fas fa-map-marked-alt me-1"></i><?php echo $t['working_zones'] ?? 'Working Zones'; ?>:</small>
                                     <?php foreach($driverWorkingZones as $zone): ?>
-                                    <span class="badge bg-primary"><?php echo ($lang == 'ar' && isset($zones[$zone])) ? (is_array($zones[$zone]) ? e($zones[$zone]['ar']) : e($zones[$zone])) : (isset($zones[$zone]) && is_array($zones[$zone]) ? e($zones[$zone][$lang] ?? $zones[$zone]['fr'] ?? $zone) : e($zone)); ?></span>
+                                    <span class="badge bg-primary"><?php echo isset($zones[$zone]) ? e($zones[$zone]) : e($zone); ?></span>
                                     <?php endforeach; ?>
                                     <a href="?settings=1" class="btn btn-sm btn-outline-secondary" style="border-radius: 20px; padding: 2px 10px;">
                                         <i class="fas fa-edit"></i>
@@ -1999,7 +1995,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                     <select name="pickup_zone" id="pickupZone" class="form-select" required onchange="calculateDeliveryPrice()">
                                         <option value=""><?php echo $t['select_zone'] ?? 'Select zone'; ?></option>
                                         <?php foreach($zones as $key => $name): ?>
-                                        <option value="<?php echo e($key); ?>"><?php echo is_array($name) ? ($name[$lang] ?? $name['fr'] ?? $key) : (($lang == 'ar') ? $name : $key); ?></option>
+                                        <option value="<?php echo e($key); ?>"><?php echo e($name); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -2010,7 +2006,7 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                     <select name="dropoff_zone" id="dropoffZone" class="form-select" required onchange="calculateDeliveryPrice()">
                                         <option value=""><?php echo $t['select_zone'] ?? 'Select zone'; ?></option>
                                         <?php foreach($zones as $key => $name): ?>
-                                        <option value="<?php echo e($key); ?>"><?php echo is_array($name) ? ($name[$lang] ?? $name['fr'] ?? $key) : (($lang == 'ar') ? $name : $key); ?></option>
+                                        <option value="<?php echo e($key); ?>"><?php echo e($name); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -2343,14 +2339,14 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                             <div class="d-flex align-items-center justify-content-between p-2 bg-light rounded">
                                 <div class="text-center flex-grow-1">
                                     <i class="fas fa-map-marker-alt text-success"></i>
-                                    <span class="small fw-bold"><?php echo ($lang == 'ar' && isset($zones[$pickupZone])) ? (is_array($zones[$pickupZone]) ? $zones[$pickupZone]['ar'] : $zones[$pickupZone]) : (isset($zones[$pickupZone]) && is_array($zones[$pickupZone]) ? ($zones[$pickupZone][$lang] ?? $zones[$pickupZone]['fr'] ?? $pickupZone) : e($pickupZone)); ?></span>
+                                    <span class="small fw-bold"><?php echo isset($zones[$pickupZone]) ? $zones[$pickupZone] : e($pickupZone); ?></span>
                                 </div>
                                 <div class="px-2">
                                     <i class="fas fa-arrow-<?php echo $dir == 'rtl' ? 'left' : 'right'; ?> text-muted"></i>
                                 </div>
                                 <div class="text-center flex-grow-1">
                                     <i class="fas fa-map-marker-alt text-danger"></i>
-                                    <span class="small fw-bold"><?php echo ($lang == 'ar' && isset($zones[$dropoffZone])) ? (is_array($zones[$dropoffZone]) ? $zones[$dropoffZone]['ar'] : $zones[$dropoffZone]) : (isset($zones[$dropoffZone]) && is_array($zones[$dropoffZone]) ? ($zones[$dropoffZone][$lang] ?? $zones[$dropoffZone]['fr'] ?? $dropoffZone) : e($dropoffZone)); ?></span>
+                                    <span class="small fw-bold"><?php echo isset($zones[$dropoffZone]) ? $zones[$dropoffZone] : e($dropoffZone); ?></span>
                                 </div>
                             </div>
                         </div>

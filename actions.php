@@ -422,8 +422,8 @@ if (isset($_SESSION['user'])) {
 
             // Set address to zone info if not provided
             if (empty($address)) {
-                $pickup_name = ($lang == 'ar' && isset($zones[$pickup_zone])) ? (is_array($zones[$pickup_zone]) ? $zones[$pickup_zone]['ar'] : $zones[$pickup_zone]) : (isset($zones[$pickup_zone]) && is_array($zones[$pickup_zone]) ? ($zones[$pickup_zone][$lang] ?? $zones[$pickup_zone]['fr'] ?? $pickup_zone) : $pickup_zone);
-                $dropoff_name = ($lang == 'ar' && isset($zones[$dropoff_zone])) ? (is_array($zones[$dropoff_zone]) ? $zones[$dropoff_zone]['ar'] : $zones[$dropoff_zone]) : (isset($zones[$dropoff_zone]) && is_array($zones[$dropoff_zone]) ? ($zones[$dropoff_zone][$lang] ?? $zones[$dropoff_zone]['fr'] ?? $dropoff_zone) : $dropoff_zone);
+                $pickup_name = isset($zones[$pickup_zone]) ? $zones[$pickup_zone] : $pickup_zone;
+                $dropoff_name = isset($zones[$dropoff_zone]) ? $zones[$dropoff_zone] : $dropoff_zone;
                 $address = $pickup_name . ' → ' . $dropoff_name;
             }
 
@@ -597,8 +597,8 @@ if (isset($_SESSION['user'])) {
 
             // Set address to zone info if not provided
             if (empty($address)) {
-                $pickup_name = ($lang == 'ar' && isset($zones[$pickup_zone])) ? (is_array($zones[$pickup_zone]) ? $zones[$pickup_zone]['ar'] : $zones[$pickup_zone]) : (isset($zones[$pickup_zone]) && is_array($zones[$pickup_zone]) ? ($zones[$pickup_zone][$lang] ?? $zones[$pickup_zone]['fr'] ?? $pickup_zone) : $pickup_zone);
-                $dropoff_name = ($lang == 'ar' && isset($zones[$dropoff_zone])) ? (is_array($zones[$dropoff_zone]) ? $zones[$dropoff_zone]['ar'] : $zones[$dropoff_zone]) : (isset($zones[$dropoff_zone]) && is_array($zones[$dropoff_zone]) ? ($zones[$dropoff_zone][$lang] ?? $zones[$dropoff_zone]['fr'] ?? $dropoff_zone) : $dropoff_zone);
+                $pickup_name = isset($zones[$pickup_zone]) ? $zones[$pickup_zone] : $pickup_zone;
+                $dropoff_name = isset($zones[$dropoff_zone]) ? $zones[$dropoff_zone] : $dropoff_zone;
                 $address = $pickup_name . ' → ' . $dropoff_name;
             }
 
