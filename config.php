@@ -36,18 +36,18 @@ $order_expiry_hours = 3;              // Orders expire after 3 hours without acc
 $uploads_dir = __DIR__ . '/uploads';  // Profile pictures directory
 
 // ==========================================
-// NOUAKCHOTT ZONES (Moughataas)
+// NOUAKCHOTT ZONES (Moughataas) - Arabic Only
 // ==========================================
 $zones = [
-    'Tevragh Zeina' => ['ar' => 'تفرغ زينة', 'fr' => 'Tevragh Zeina'],
-    'Ksar' => ['ar' => 'لكصر', 'fr' => 'Ksar'],
-    'Sebkha' => ['ar' => 'السبخة', 'fr' => 'Sebkha'],
-    'Teyarett' => ['ar' => 'تيارت', 'fr' => 'Teyarett'],
-    'Dar Naïm' => ['ar' => 'دار النعيم', 'fr' => 'Dar Naïm'],
-    'Toujounine' => ['ar' => 'توجنين', 'fr' => 'Toujounine'],
-    'Arafat' => ['ar' => 'عرفات', 'fr' => 'Arafat'],
-    'El Mina' => ['ar' => 'الميناء', 'fr' => 'El Mina'],
-    'Riyad' => ['ar' => 'الرياض', 'fr' => 'Riyad']
+    'Tevragh Zeina' => 'تفرغ زينة',
+    'Ksar' => 'لكصر',
+    'Sebkha' => 'السبخة',
+    'Teyarett' => 'تيارت',
+    'Dar Naïm' => 'دار النعيم',
+    'Toujounine' => 'توجنين',
+    'Arafat' => 'عرفات',
+    'El Mina' => 'الميناء',
+    'Riyad' => 'الرياض'
 ];
 
 // ==========================================
