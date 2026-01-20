@@ -7,9 +7,11 @@
 // ==========================================
 // LANGUAGE SETTINGS
 // ==========================================
-// Only Arabic language is supported
-$lang = 'ar'; // Always use Arabic
-$dir = 'rtl'; // Always RTL for Arabic
+if (isset($_GET['lang']) && in_array($_GET['lang'], ['ar', 'fr'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+$lang = $_SESSION['lang'] ?? 'ar';
+$dir = ($lang == 'ar') ? 'rtl' : 'ltr';
 
 // ==========================================
 // HELPER FUNCTIONS
@@ -23,32 +25,37 @@ function e($str) {
 }
 
 /**
- * Format date according to current language (Arabic only)
+ * Format date according to current language
  */
 function fmtDate($date) {
+    global $lang;
     $timestamp = strtotime($date);
     $now = time();
     $diff = $now - $timestamp;
 
     // Show relative time for recent dates
     if ($diff < 60) {
-        return 'الآن';
+        return $lang == 'ar' ? 'الآن' : 'Maintenant';
     } elseif ($diff < 3600) {
         $mins = floor($diff / 60);
-        return "منذ {$mins} دقيقة";
+        return $lang == 'ar' ? "منذ {$mins} دقيقة" : "Il y a {$mins} min";
     } elseif ($diff < 86400) {
         $hours = floor($diff / 3600);
-        return "منذ {$hours} ساعة";
+        return $lang == 'ar' ? "منذ {$hours} ساعة" : "Il y a {$hours}h";
     }
 
-    // Format as Arabic date
-    $months_ar = ['', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
-                  'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-    $day = date('d', $timestamp);
-    $month = $months_ar[(int)date('m', $timestamp)];
-    $year = date('Y', $timestamp);
-    $time = date('h:i A', $timestamp);
-    return "$day $month $year - $time";
+    // Format as date
+    if ($lang == 'ar') {
+        $months_ar = ['', 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+        $day = date('d', $timestamp);
+        $month = $months_ar[(int)date('m', $timestamp)];
+        $year = date('Y', $timestamp);
+        $time = date('h:i A', $timestamp);
+        return "$day $month $year - $time";
+    }
+    
+    return date('d/m/Y H:i', $timestamp);
 }
 
 /**
@@ -910,6 +917,480 @@ $text = [
         'visitors_this_week' => 'زوار الأسبوع',
         'visitors_this_month' => 'زوار الشهر',
         'total_visitors' => 'إجمالي الزوار'
+    ],
+
+    'fr' => [
+        // App
+        'app_name' => 'Système de Livraison Barq',
+        'app_desc' => 'Service de livraison rapide et fiable',
+        'welcome' => 'Bienvenue',
+        'welcome_back' => 'Bon retour',
+
+        // Auth
+        'login_title' => 'Connexion',
+        'register_title' => 'Créer un nouveau compte',
+        'user_ph' => 'Nom d\'utilisateur',
+        'pass_ph' => 'Mot de passe',
+        'confirm_pass_ph' => 'Confirmer le mot de passe',
+        'full_name_ph' => 'Nom complet',
+        'phone_ph' => 'Numéro de téléphone',
+        'email_ph' => 'Email',
+        'btn_login' => 'Se connecter',
+        'btn_register' => 'Créer un compte',
+        'have_account' => 'Vous avez déjà un compte?',
+        'no_account' => 'Vous n\'avez pas de compte?',
+        'login_here' => 'Connectez-vous',
+        'register_here' => 'Créer un compte',
+        'logout' => 'Déconnexion',
+        'logout_confirm' => 'Voulez-vous vous déconnecter?',
+
+        // Dashboard
+        'dashboard' => 'Tableau de bord',
+        'home' => 'Accueil',
+        'settings' => 'Paramètres',
+        'profile' => 'Profil',
+        'my_account' => 'Mon compte',
+
+        // Balance & Points
+        'balance' => 'Mon solde',
+        'points' => 'points',
+        'pts' => 'pts',
+        'current_balance' => 'Solde actuel',
+        'recharge_wa' => 'Recharger via WhatsApp',
+        'recharge_now' => 'Recharger maintenant',
+        'low_balance' => 'Solde faible',
+
+        // Orders
+        'new_order' => 'Nouvelle commande',
+        'create_order' => 'Créer une commande',
+        'order_details' => 'Détails de la commande',
+        'order_info' => 'Informations de commande',
+        'address' => 'Adresse',
+        'delivery_address' => 'Adresse de livraison',
+        'btn_publish' => 'Publier la commande',
+        'recent_orders' => 'Commandes',
+        'my_orders' => 'Mes commandes',
+        'all_orders' => 'Toutes les commandes',
+        'available_orders' => 'Commandes disponibles',
+        'order_number' => 'Numéro de commande',
+        'order_date' => 'Date de commande',
+
+        // Status
+        'status' => 'Statut',
+        'action' => 'Actions',
+        'actions' => 'Actions',
+        'st_pending' => 'En attente d\'un chauffeur',
+        'st_accepted' => 'En cours de livraison',
+        'st_delivered' => 'Livré',
+        'st_cancelled' => 'Annulé',
+
+        // PIN
+        'pin_label' => 'Code de livraison',
+        'pin_code' => 'Code PIN',
+        'pin_note' => 'Donnez ce code au chauffeur uniquement à la réception',
+        'pin_warning' => 'Ne partagez ce code qu\'à la réception de votre commande',
+        'enter_pin' => 'Entrez le code de livraison',
+
+        // Driver
+        'driver_accept' => 'Accepter',
+        'driver_pickup' => 'Récupéré',
+        'accept_order' => 'Accepter la commande',
+        'driver_cost' => 'Coût',
+        'cost_per_order' => 'Coût de la commande',
+        'verify_fin' => 'Terminer la livraison',
+        'verify_ph' => 'PIN',
+        'finish_delivery' => 'Terminer la livraison',
+        'my_deliveries' => 'Mes livraisons',
+        'accepted_orders' => 'Commandes acceptées',
+
+        // Errors
+        'err_low_bal' => 'Votre solde est insuffisant pour accepter de nouvelles commandes',
+        'err_auth' => 'Nom d\'utilisateur ou mot de passe incorrect',
+        'err_banned' => 'Votre compte a été suspendu. Contactez l\'administration',
+        'err_pin' => 'Code de livraison incorrect',
+        'err_pin_format' => 'Le code de livraison doit être composé de 4 chiffres',
+        'err_username_short' => 'Le nom d\'utilisateur doit contenir au moins 3 caractères',
+        'err_password_short' => 'Le mot de passe doit contenir au moins 4 caractères',
+        'err_password_mismatch' => 'Les mots de passe ne correspondent pas',
+        'err_username_exists' => 'Ce nom d\'utilisateur est déjà utilisé',
+        'err_register' => 'Échec de la création du compte. Réessayez',
+        'err_order_taken' => 'Cette commande a été acceptée par un autre chauffeur',
+        'err_general' => 'Une erreur s\'est produite. Réessayez',
+        'err_invalid_order' => 'Commande invalide',
+        'err_order_not_found' => 'Commande introuvable',
+        'err_not_your_order' => 'Cette commande ne vous est pas assignée',
+        'err_order_not_accepted' => 'La commande doit être acceptée pour la récupérer',
+        'err_pickup_failed' => 'Échec de la mise à jour du statut. Réessayez',
+        'err_order_status' => 'Impossible de terminer la commande dans son état actuel',
+
+        // Success
+        'success_add' => 'Votre commande a été publiée avec succès',
+        'success_acc' => 'Commande acceptée avec succès',
+        'success_fin' => 'Commande livrée avec succès. Excellent travail!',
+        'success_register' => 'Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter',
+        'success_profile' => 'Votre profil a été mis à jour avec succès',
+        'success_order_cancelled' => 'Commande annulée avec succès',
+        'success_user_added' => 'Utilisateur ajouté avec succès',
+        'success_user_updated' => 'Utilisateur mis à jour avec succès',
+        'success_user_deleted' => 'Utilisateur supprimé avec succès',
+        'success_points_added' => 'Points ajoutés avec succès',
+
+        // Empty states
+        'empty_list' => 'Aucune commande pour le moment',
+        'no_orders' => 'Aucune commande',
+        'no_pending_orders' => 'Aucune commande disponible pour le moment',
+        'no_users' => 'Aucun utilisateur',
+        'check_back_later' => 'Revenez plus tard',
+
+        // Admin
+        'admin_panel' => 'Panneau d\'administration',
+        'manage_users' => 'Gérer les clients',
+        'manage_drivers' => 'Gérer les chauffeurs',
+        'manage_orders' => 'Gérer les commandes',
+        'add_user' => 'Ajouter un utilisateur',
+        'edit_user' => 'Modifier l\'utilisateur',
+        'add_order' => 'Ajouter une commande',
+        'edit_order' => 'Modifier la commande',
+        'add_points' => 'Ajouter des points',
+        'recharge_points' => 'Recharger les points',
+
+        // User fields
+        'username' => 'Nom d\'utilisateur',
+        'password' => 'Mot de passe',
+        'new_password' => 'Nouveau mot de passe',
+        'current_password' => 'Mot de passe actuel',
+        'confirm_new_password' => 'Confirmer le nouveau mot de passe',
+        'role' => 'Rôle',
+        'user_type' => 'Type d\'utilisateur',
+
+        // Roles
+        'admin' => 'Administrateur',
+        'driver' => 'Chauffeur',
+        'customer' => 'Client',
+        'drivers' => 'Chauffeurs',
+        'customers' => 'Clients',
+
+        // Status labels
+        'active' => 'Actif',
+        'banned' => 'Banni',
+        'online' => 'En ligne',
+        'offline' => 'Hors ligne',
+        'offline_warning' => 'Vous êtes hors ligne',
+        'offline_warning_desc' => 'Passez en ligne pour recevoir de nouvelles commandes',
+
+        // Actions
+        'edit' => 'Modifier',
+        'delete' => 'Supprimer',
+        'save' => 'Enregistrer',
+        'cancel' => 'Annuler',
+        'confirm' => 'Confirmer',
+        'close' => 'Fermer',
+        'back' => 'Retour',
+        'submit' => 'Soumettre',
+        'ban' => 'Bannir',
+        'unban' => 'Débannir',
+        'cancel_order' => 'Annuler la commande',
+        'delete_order' => 'Supprimer la commande',
+        'view_details' => 'Voir les détails',
+
+        // Statistics
+        'total_users' => 'Total des utilisateurs',
+        'total_orders' => 'Total des commandes',
+        'total_drivers' => 'Total des chauffeurs',
+        'total_customers' => 'Total des clients',
+        'active_drivers' => 'Chauffeurs actifs',
+        'pending_orders' => 'Commandes en attente',
+        'completed_orders' => 'Commandes terminées',
+        'statistics' => 'Statistiques',
+
+        // Order fields
+        'customer_name' => 'Nom du client',
+        'assign_driver' => 'Assigner un chauffeur',
+        'no_driver' => 'Sans chauffeur',
+        'select_driver' => 'Sélectionner un chauffeur',
+        'select_status' => 'Sélectionner le statut',
+
+        // Settings
+        'save_changes' => 'Enregistrer les modifications',
+        'leave_empty_password' => 'Laissez vide pour conserver le mot de passe actuel',
+        'profile_updated' => 'Profil mis à jour',
+        'change_password' => 'Changer le mot de passe',
+        'account_settings' => 'Paramètres du compte',
+        'personal_info' => 'Informations personnelles',
+        'security' => 'Sécurité',
+
+        // Notifications
+        'new_order_alert' => 'Nouvelle commande!',
+        'order_status_changed' => 'Le statut de votre commande a été mis à jour',
+        'notification' => 'Notification',
+        'notifications' => 'Notifications',
+        'new_notification' => 'Nouvelle notification',
+
+        // Confirmations
+        'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer?',
+        'confirm_cancel' => 'Voulez-vous annuler cette commande?',
+        'confirm_ban' => 'Voulez-vous bannir cet utilisateur?',
+        'confirm_accept' => 'Voulez-vous accepter cette commande?',
+        'action_irreversible' => 'Cette action est irréversible',
+
+        // Misc
+        'loading' => 'Chargement...',
+        'please_wait' => 'Veuillez patienter...',
+        'search' => 'Rechercher',
+        'filter' => 'Filtrer',
+        'refresh' => 'Actualiser',
+        'date' => 'Date',
+        'time' => 'Heure',
+        'created_at' => 'Date de création',
+        'updated_at' => 'Date de mise à jour',
+        'id' => 'ID',
+        'details' => 'Détails',
+        'amount' => 'Montant',
+        'select' => 'Sélectionner',
+        'optional' => 'Optionnel',
+        'required' => 'Requis',
+        'demo_accounts' => 'Comptes de démonstration',
+        'all_rights' => 'Tous droits réservés',
+        'copyright' => 'Droits d\'auteur',
+
+        // Time
+        'now' => 'Maintenant',
+        'today' => 'Aujourd\'hui',
+        'yesterday' => 'Hier',
+        'minutes_ago' => 'Il y a quelques minutes',
+        'hours_ago' => 'Il y a quelques heures',
+        'days_ago' => 'Il y a quelques jours',
+
+        // Enhanced v2.0
+        'serial_no' => 'Numéro de série',
+        'user_id' => 'ID utilisateur',
+        'profile_picture' => 'Photo de profil',
+        'upload_photo' => 'Télécharger une photo',
+        'change_photo' => 'Changer la photo',
+        'remove_photo' => 'Supprimer la photo',
+        'phone_required' => 'Numéro de téléphone requis pour continuer',
+        'phone_not_verified' => 'Veuillez ajouter votre numéro de téléphone pour continuer',
+        'verify_phone' => 'Vérifier le téléphone',
+        'phone_verified' => 'Téléphone vérifié',
+        'add_phone_first' => 'Ajoutez d\'abord votre numéro de téléphone',
+
+        // Driver Verification
+        'driver_verified' => 'Chauffeur vérifié',
+        'driver_not_verified' => 'Votre compte doit être vérifié par l\'administrateur avant d\'accepter des commandes',
+        'pending_verification' => 'En attente de vérification',
+        'verified' => 'Vérifié',
+        'verification' => 'Vérification',
+        'verify_driver' => 'Vérifier le chauffeur',
+        'unverify' => 'Annuler la vérification',
+        'confirm_verify' => 'Voulez-vous vérifier ce chauffeur?',
+        'confirm_unverify' => 'Voulez-vous annuler la vérification?',
+        'driver_verified_success' => 'Chauffeur vérifié avec succès! Il peut maintenant accepter des commandes.',
+        'driver_unverified' => 'Vérification du chauffeur annulée.',
+
+        // Phone Registration (Mauritania: 8 digits starting with 2, 3, or 4)
+        'phone_example' => '2XXXXXXX',
+        'phone_format_hint' => '8 chiffres commençant par 2, 3 ou 4',
+        'err_phone_invalid' => 'Le téléphone doit être composé de 8 chiffres commençant par 2, 3 ou 4',
+        'err_phone_exists' => 'Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.',
+        'demo_phone_login' => 'Comptes de démonstration (Téléphone / Mot de passe):',
+        'profile_completed' => 'Profil mis à jour avec succès!',
+
+        // Driver Enhanced
+        'go_online' => 'Passer en ligne',
+        'go_offline' => 'Passer hors ligne',
+        'you_are_online' => 'Vous êtes en ligne et recevrez de nouvelles commandes',
+        'you_are_offline' => 'Vous êtes hors ligne',
+        'you_are_offline_no_orders' => 'Vous êtes hors ligne et ne recevrez pas de nouvelles commandes',
+        'earnings' => 'Gains',
+        'my_earnings' => 'Mes gains',
+        'today_earnings' => 'Gains d\'aujourd\'hui',
+        'week_earnings' => 'Gains de la semaine',
+        'month_earnings' => 'Gains du mois',
+        'completed_deliveries' => 'Livraisons terminées',
+        'active_deliveries' => 'Livraisons actives',
+        'my_rating' => 'Ma note',
+        'max_orders_reached' => 'Vous avez atteint le maximum de commandes actives',
+
+        // Client Enhanced
+        'active_orders' => 'Commandes actives',
+        'track_order' => 'Suivre la commande',
+        'order_history' => 'Historique des commandes',
+        'no_history' => 'Pas d\'historique de commandes',
+        'history_empty' => 'Les commandes terminées apparaîtront ici',
+        'rate_driver' => 'Évaluer le chauffeur',
+        'rate_delivery' => 'Évaluer la livraison',
+        'your_rating' => 'Votre évaluation',
+        'leave_comment' => 'Laisser un commentaire',
+        'submit_rating' => 'Soumettre l\'évaluation',
+        'thanks_for_rating' => 'Merci pour votre évaluation!',
+
+        // Order Status Enhanced
+        'st_picked_up' => 'Récupéré',
+        'finding_driver' => 'Recherche d\'un chauffeur...',
+        'driver_assigned' => 'Chauffeur assigné',
+        'driver_on_way' => 'Chauffeur en route',
+        'driver_arrived' => 'Chauffeur arrivé',
+        'package_picked' => 'Colis récupéré! Entrez le code PIN pour terminer la livraison',
+        'on_the_way' => 'En route vers vous',
+
+        // Tracking
+        'live_tracking' => 'Suivi en direct',
+        'distance' => 'Distance',
+        'eta' => 'Temps estimé',
+        'km' => 'km',
+        'min' => 'min',
+        'call_driver' => 'Appeler le chauffeur',
+        'message_driver' => 'Message au chauffeur',
+
+        // Stats
+        'this_week' => 'Cette semaine',
+        'this_month' => 'Ce mois',
+        'orders_count' => 'Nombre de commandes',
+        'delivery_count' => 'Nombre de livraisons',
+
+        // Help & Footer
+        'need_help' => 'Besoin d\'aide?',
+        'contact_us' => 'Contactez-nous',
+        'connect_with_us' => 'Connectez avec nous',
+        'call_us' => 'Appelez-nous',
+        'fast_delivery' => 'Service de livraison rapide et fiable pour tous vos besoins.',
+        'available_24_7' => 'Disponible 24h/24',
+        'location_mauritania' => 'Nouakchott, Mauritanie',
+        'secure_service' => 'Service sécurisé',
+
+        // GPS & Location
+        'gps_status' => 'Statut GPS',
+        'gps_enabled' => 'GPS activé',
+        'gps_disabled' => 'GPS désactivé',
+        'enable_gps' => 'Activer le GPS',
+        'disable_gps' => 'Désactiver le GPS',
+        'turn_on_gps' => 'Allumer le GPS',
+        'gps_required' => 'La localisation GPS est requise pour que les chauffeurs vous trouvent',
+        'gps_driver_note' => 'Activez le GPS pour voir les commandes à proximité (7 km)',
+        'enable_gps_first' => 'Activez d\'abord le GPS',
+        'no_nearby_orders' => 'Aucune commande à proximité (7 km)',
+        'geolocation_not_supported' => 'Votre navigateur ne prend pas en charge la géolocalisation',
+        'location_error' => 'Erreur de localisation',
+        'location_denied' => 'Accès à la localisation refusé. Veuillez activer le GPS.',
+        'click_gps' => 'Cliquez sur GPS pour définir votre position',
+        'pickup_location' => 'Lieu de ramassage',
+        'updating_location' => 'Mise à jour de la position...',
+        'location_updated' => 'Position mise à jour',
+        'gps_accuracy' => 'Précision GPS',
+        'last_update' => 'Dernière mise à jour',
+        'new_order_nearby' => 'Nouvelle commande à proximité!',
+        'accept' => 'Accepter',
+        'decline' => 'Refuser',
+        'no_phone' => 'Pas de téléphone',
+        'update_order' => 'Mettre à jour la commande',
+
+        // Zone System
+        'pickup_zone' => 'Zone de ramassage',
+        'dropoff_zone' => 'Zone de livraison',
+        'select_zone' => 'Sélectionner la zone',
+        'delivery_price' => 'Prix de livraison',
+        'price' => 'Prix',
+        'mru' => 'MRU',
+        'from_zone' => 'De',
+        'to_zone' => 'À',
+        'zone_required' => 'Veuillez sélectionner les zones de ramassage et de livraison',
+        'address_placeholder' => 'Adresse détaillée (optionnel)',
+        
+        // Order Summary
+        'order_summary' => 'Résumé de la commande',
+        'delivery_price' => 'Prix de livraison',
+        'discount' => 'Réduction',
+        'total_price' => 'Total',
+        'subtotal' => 'Sous-total',
+
+        // Working Zones (Driver)
+        'working_zones' => 'Zones de travail',
+        'working_zones_note' => 'Sélectionnez les zones où vous souhaitez recevoir des commandes. Laissez vide pour recevoir des commandes de toutes les zones.',
+        'select_working_zones' => 'Sélectionner les zones de travail',
+        'no_working_zones' => 'Aucune zone de travail sélectionnée',
+        'no_working_zones_tip' => 'Conseil: Définissez vos zones de travail dans les paramètres pour recevoir uniquement les commandes de vos zones préférées.',
+
+        // Enhanced Admin Statistics
+        'new_this_month' => 'Nouveau ce mois',
+        'in_progress' => 'En cours',
+        'orders' => 'Commandes',
+        'revenue' => 'Revenus',
+        'delivery_value' => 'Valeur de livraison',
+        'performance' => 'Performance',
+        'cancelled' => 'Annulé',
+        'avg_delivery_time' => 'Temps de livraison moyen',
+        'total_delivery_value' => 'Valeur totale',
+        'new_users_today' => 'Nouveaux utilisateurs aujourd\'hui',
+        'today_delivery_value' => 'Valeur d\'aujourd\'hui',
+        'top_drivers' => 'Meilleurs chauffeurs',
+        'popular_zones' => 'Zones populaires',
+        'no_data' => 'Aucune donnée',
+        'pending' => 'En attente',
+        
+        // Driver Info Display
+        'driver_info' => 'Informations du chauffeur',
+        'driver_phone' => 'Téléphone du chauffeur',
+        'contact_driver' => 'Contacter le chauffeur',
+        'driver_rating' => 'Évaluation du chauffeur',
+        'order_driver' => 'Chauffeur assigné',
+        
+        // Missing Admin UI Translations
+        'select_all' => 'Tout sélectionner',
+        'bulk_recharge' => 'Recharge en masse',
+        'promo_codes' => 'Codes promotionnels',
+        'create_promo' => 'Créer un code promo',
+        'edit_promo' => 'Modifier le code promo',
+        'no_promo_codes' => 'Aucun code promo. Créez-en un pour commencer!',
+        'confirm_delete' => 'Êtes-vous sûr de vouloir supprimer?',
+        'delete_permanently' => 'Supprimer définitivement',
+        'confirm_action' => 'Confirmer',
+        'success_rate' => 'Taux de réussite',
+        'today_orders' => 'Commandes d\'aujourd\'hui',
+        'customers' => 'Clients',
+        'confirm_recharge' => 'Confirmer la recharge',
+        'verify' => 'Vérifier',
+        'receiving_orders' => 'Réception de commandes',
+        'tap_to_go_online' => 'Appuyez pour passer en ligne',
+        'your_balance' => 'Votre solde',
+        'whatsapp_recharge' => 'Recharger via WhatsApp',
+        'recharge_note' => 'Contactez le support pour ajouter du crédit à votre compte',
+        'rating' => 'Évaluation',
+        'hello' => 'Bonjour',
+        'start_your_day' => 'Commencez votre journée avec énergie!',
+        'what_need_today' => 'De quoi avez-vous besoin aujourd\'hui?',
+        'phone_auto_verify' => 'Le téléphone est automatiquement vérifié lors de l\'ajout',
+        'order_details_placeholder' => 'Décrivez ce que vous voulez faire livrer...',
+        'enter_promo_code' => 'Entrez le code promo',
+        'apply' => 'Appliquer',
+        'total_revenue' => 'Revenus totaux',
+        'today_revenue' => 'Revenus d\'aujourd\'hui',
+        'delivered' => 'Livré',
+        'driver_finish' => 'Terminer',
+        'order_released' => 'Commande libérée. Points remboursés.',
+        'confirm_release' => 'Libérer cette commande? Les points seront remboursés.',
+        
+        // Driver Tiers
+        'your_tier' => 'Votre niveau',
+        'new_driver' => 'Nouveau chauffeur',
+        'regular_driver' => 'Chauffeur régulier',
+        'pro_driver' => 'Chauffeur professionnel',
+        'vip_driver' => 'Chauffeur VIP',
+        
+        // Recharge History
+        'recharge_history' => 'Historique des recharges',
+        'no_recharge_history' => 'Aucun historique de recharge pour le moment.',
+        'previous_balance' => 'Solde précédent',
+        'new_balance' => 'Nouveau solde',
+        'bulk' => 'En masse',
+        'single' => 'Unique',
+        'call' => 'Appel',
+        
+        // Visitor Statistics
+        'site_visitors' => 'Visiteurs du site',
+        'visitors_today' => 'Visiteurs aujourd\'hui',
+        'visitors_this_week' => 'Visiteurs cette semaine',
+        'visitors_this_month' => 'Visiteurs ce mois',
+        'total_visitors' => 'Total des visiteurs'
     ]
 ];
 $t = $text[$lang];
