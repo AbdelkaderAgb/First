@@ -2016,33 +2016,6 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                 </div>
                             </div>
 
-                            <!-- Order Summary Section -->
-                            <div class="mb-3" id="orderSummaryContainer" style="display: none;">
-                                <div class="alert alert-light border rounded-3 py-3 px-3 mb-0">
-                                    <h6 class="mb-3 fw-bold"><i class="fas fa-receipt me-2 text-primary"></i><?php echo $t['order_summary'] ?? 'Order Summary'; ?></h6>
-                                    
-                                    <!-- Base Delivery Price -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span><i class="fas fa-truck me-2 text-muted"></i><?php echo $t['delivery_price'] ?? 'Delivery Price'; ?>:</span>
-                                        <span id="basePriceDisplay" class="fw-bold">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
-                                    </div>
-                                    
-                                    <!-- Discount Row (shown only when promo is applied) -->
-                                    <div class="d-flex justify-content-between align-items-center mb-2" id="discountRow" style="display: none;">
-                                        <span class="text-success"><i class="fas fa-tag me-2"></i><?php echo $t['discount'] ?? 'Discount'; ?>:</span>
-                                        <span id="discountDisplay" class="text-success fw-bold">-0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
-                                    </div>
-                                    
-                                    <hr class="my-2">
-                                    
-                                    <!-- Final Price -->
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold"><i class="fas fa-coins me-2 text-warning"></i><?php echo $t['total_price'] ?? 'Total'; ?>:</span>
-                                        <span id="finalPriceDisplay" class="fs-5 fw-bold text-primary">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="mb-3">
                                 <label class="form-label small text-muted mb-1">
                                     <i class="fas fa-home me-1"></i><?php echo $t['address'] ?? 'Address'; ?> <span class="text-muted">(<?php echo $t['optional'] ?? 'Optional'; ?>)</span>
@@ -2800,16 +2773,11 @@ let currentPromoValid = false;
 function calculateDeliveryPrice() {
     const pickupZone = document.getElementById('pickupZone')?.value;
     const dropoffZone = document.getElementById('dropoffZone')?.value;
-    const summaryContainer = document.getElementById('orderSummaryContainer');
-    const basePriceDisplay = document.getElementById('basePriceDisplay');
-    const finalPriceDisplay = document.getElementById('finalPriceDisplay');
-
-    if (!summaryContainer || !basePriceDisplay || !finalPriceDisplay) return;
 
     // Pricing constants for fallback when no routes found
     const DEFAULT_PRICE = 150;
 
-    // Show summary only when both zones are selected (to show exact price, not range)
+    // Calculate price when both zones are selected
     if (pickupZone && dropoffZone) {
         // Both zones selected - find exact price
         let price = DEFAULT_PRICE;
@@ -2820,48 +2788,11 @@ function calculateDeliveryPrice() {
             }
         }
         currentBasePrice = price;
-        
-        // Update the display
-        basePriceDisplay.textContent = price + ' ' + AppTranslations.mru;
-        
-        // Calculate final price with discount
-        updateOrderSummary();
-        
-        summaryContainer.style.display = 'block';
     } else {
-        // Hide summary if not both zones selected
-        summaryContainer.style.display = 'none';
         currentBasePrice = 0;
     }
 }
 
-// Update the order summary with discount calculations
-function updateOrderSummary() {
-    const basePriceDisplay = document.getElementById('basePriceDisplay');
-    const discountRow = document.getElementById('discountRow');
-    const discountDisplay = document.getElementById('discountDisplay');
-    const finalPriceDisplay = document.getElementById('finalPriceDisplay');
-    
-    if (!basePriceDisplay || !discountRow || !discountDisplay || !finalPriceDisplay) return;
-    
-    // Update base price display
-    basePriceDisplay.textContent = currentBasePrice + ' ' + AppTranslations.mru;
-    
-    // Calculate final price
-    let finalPrice = currentBasePrice - currentDiscount;
-    if (finalPrice < 0) finalPrice = 0;
-    
-    // Show/hide discount row based on whether there's a discount
-    if (currentDiscount > 0 && currentPromoValid) {
-        discountRow.style.display = 'flex';
-        discountDisplay.textContent = '-' + currentDiscount + ' ' + AppTranslations.mru;
-    } else {
-        discountRow.style.display = 'none';
-    }
-    
-    // Update final price
-    finalPriceDisplay.textContent = finalPrice + ' ' + AppTranslations.mru;
-}
 
 window.showOrderTracking = function(order) {
     _showOrderTracking(order, AppTranslations);

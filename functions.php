@@ -821,8 +821,6 @@ $text = [
         'zone_required' => 'يرجى اختيار منطقة الاستلام والتوصيل',
         'address_placeholder' => 'العنوان التفصيلي (اختياري)',
         
-        // Order Summary
-        'order_summary' => 'ملخص الطلب',
         'discount' => 'الخصم',
         'total_price' => 'الإجمالي',
 
@@ -1293,8 +1291,6 @@ $text = [
         'zone_required' => 'Veuillez sélectionner les zones de ramassage et de livraison',
         'address_placeholder' => 'Adresse détaillée (optionnel)',
         
-        // Order Summary
-        'order_summary' => 'Résumé de la commande',
         'discount' => 'Réduction',
         'total_price' => 'Total',
 
