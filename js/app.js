@@ -928,6 +928,9 @@ function validatePromoCode() {
         if (typeof currentDiscount !== 'undefined') {
             currentDiscount = 0;
             currentPromoValid = false;
+            if (typeof updateOrderSummary === 'function') {
+                updateOrderSummary();
+            }
         }
         return;
     }
@@ -962,6 +965,11 @@ function validatePromoCode() {
                     }
                     currentDiscount = discountAmount;
                     currentPromoValid = true;
+                    
+                    // Update order summary display
+                    if (typeof updateOrderSummary === 'function') {
+                        updateOrderSummary();
+                    }
                 }
             } else {
                 feedback.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i>' + data.message;
@@ -973,6 +981,9 @@ function validatePromoCode() {
                 if (typeof currentDiscount !== 'undefined') {
                     currentDiscount = 0;
                     currentPromoValid = false;
+                    if (typeof updateOrderSummary === 'function') {
+                        updateOrderSummary();
+                    }
                 }
             }
         })
@@ -986,6 +997,9 @@ function validatePromoCode() {
             if (typeof currentDiscount !== 'undefined') {
                 currentDiscount = 0;
                 currentPromoValid = false;
+                if (typeof updateOrderSummary === 'function') {
+                    updateOrderSummary();
+                }
             }
         });
 }

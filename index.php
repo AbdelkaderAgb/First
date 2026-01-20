@@ -2016,6 +2016,57 @@ trackVisitor($conn, isset($_SESSION['user']) ? $_SESSION['user']['id'] : null);
                                 </div>
                             </div>
 
+                            <!-- Modern Order Summary Card -->
+                            <div class="mb-3" id="orderSummaryContainer" style="display: none;">
+                                <div class="card border-0 shadow-sm" style="border-radius: 16px; overflow: hidden;">
+                                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; padding: 16px 20px;">
+                                        <h6 class="mb-0 fw-bold d-flex align-items-center">
+                                            <i class="fas fa-calculator me-2"></i>
+                                            <?php echo $t['order_summary'] ?? 'Order Summary'; ?>
+                                        </h6>
+                                    </div>
+                                    <div class="card-body" style="padding: 20px; background: #f8f9fa;">
+                                        <!-- Base Delivery Price Row -->
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded-3 shadow-sm">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-truck text-white"></i>
+                                                </div>
+                                                <span class="fw-medium"><?php echo $t['delivery_price'] ?? 'Delivery Price'; ?></span>
+                                            </div>
+                                            <span id="basePriceDisplay" class="fw-bold fs-5" style="color: #667eea;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                        </div>
+                                        
+                                        <!-- Discount Row (shown only when promo is applied) -->
+                                        <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded-3 shadow-sm" id="discountRow" style="display: none !important;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-wrapper me-3" style="width: 40px; height: 40px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="fas fa-tag text-white"></i>
+                                                </div>
+                                                <span class="fw-medium text-success"><?php echo $t['discount'] ?? 'Discount'; ?></span>
+                                            </div>
+                                            <span id="discountDisplay" class="fw-bold fs-5 text-success">-0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                        </div>
+                                        
+                                        <!-- Divider -->
+                                        <hr style="border-top: 2px dashed #dee2e6; margin: 20px 0;">
+                                        
+                                        <!-- Final Total Price -->
+                                        <div class="p-4 bg-white rounded-3 shadow-sm" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon-wrapper me-3" style="width: 48px; height: 48px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fas fa-receipt" style="color: #ff6b6b; font-size: 20px;"></i>
+                                                    </div>
+                                                    <span class="fw-bold fs-5"><?php echo $t['total_price'] ?? 'Total'; ?></span>
+                                                </div>
+                                                <span id="finalPriceDisplay" class="fw-bold" style="font-size: 28px; color: #667eea;">0 <?php echo $t['mru'] ?? 'MRU'; ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label small text-muted mb-1">
                                     <i class="fas fa-home me-1"></i><?php echo $t['address'] ?? 'Address'; ?> <span class="text-muted">(<?php echo $t['optional'] ?? 'Optional'; ?>)</span>
@@ -2773,6 +2824,7 @@ let currentPromoValid = false;
 function calculateDeliveryPrice() {
     const pickupZone = document.getElementById('pickupZone')?.value;
     const dropoffZone = document.getElementById('dropoffZone')?.value;
+    const summaryContainer = document.getElementById('orderSummaryContainer');
 
     // Pricing constants for fallback when no routes found
     const DEFAULT_PRICE = 150;
@@ -2788,11 +2840,60 @@ function calculateDeliveryPrice() {
             }
         }
         currentBasePrice = price;
+        
+        // Show summary and update display
+        if (summaryContainer) {
+            summaryContainer.style.display = 'block';
+            updateOrderSummary();
+        }
     } else {
+        // Hide summary if not both zones selected
         currentBasePrice = 0;
+        if (summaryContainer) {
+            summaryContainer.style.display = 'none';
+        }
     }
 }
 
+// Update order summary with proper error handling
+function updateOrderSummary() {
+    try {
+        const basePriceDisplay = document.getElementById('basePriceDisplay');
+        const discountRow = document.getElementById('discountRow');
+        const discountDisplay = document.getElementById('discountDisplay');
+        const finalPriceDisplay = document.getElementById('finalPriceDisplay');
+        
+        // Validate all required elements exist
+        if (!basePriceDisplay || !discountRow || !discountDisplay || !finalPriceDisplay) {
+            console.error('Order summary elements not found');
+            return;
+        }
+        
+        // Ensure currentBasePrice is a valid number
+        const basePrice = Number(currentBasePrice) || 0;
+        const discount = Number(currentDiscount) || 0;
+        
+        // Update base price display
+        basePriceDisplay.textContent = basePrice + ' ' + (AppTranslations.mru || 'MRU');
+        
+        // Calculate final price (ensure it doesn't go negative)
+        let finalPrice = Math.max(0, basePrice - discount);
+        
+        // Show/hide discount row based on whether there's a valid discount
+        if (discount > 0 && currentPromoValid) {
+            discountRow.style.display = 'flex';
+            discountDisplay.textContent = '-' + discount + ' ' + (AppTranslations.mru || 'MRU');
+        } else {
+            discountRow.style.display = 'none';
+        }
+        
+        // Update final price with smooth number formatting
+        finalPriceDisplay.textContent = finalPrice + ' ' + (AppTranslations.mru || 'MRU');
+        
+    } catch (error) {
+        console.error('Error updating order summary:', error);
+    }
+}
 
 window.showOrderTracking = function(order) {
     _showOrderTracking(order, AppTranslations);
