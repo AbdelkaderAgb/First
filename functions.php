@@ -1300,7 +1300,6 @@ $text = [
         'delivery_price' => 'Prix de livraison',
         'discount' => 'Réduction',
         'total_price' => 'Total',
-        'subtotal' => 'Sous-total',
 
         // Working Zones (Driver)
         'working_zones' => 'Zones de travail',
